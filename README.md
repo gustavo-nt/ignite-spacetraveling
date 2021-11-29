@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://github.com/gustavo-nt/ignite-gorestaurant/blob/master/src/assets/logo-git.png" alt="GoRestaurant" />
+  <img src="https://github.com/gustavo-nt/ignite-spacetraveling/blob/master/public/logo-github.svg" alt="Spacetraveling" />
 </p>
 
 <h1 align="center">
     🚀 GoRestaurant
 </h1>
-<p align="center">Desafio do Bootcamp Ignite sobre Refactoring de classes e TypeScript em ReactJS</p>
+<p align="center">Desafio do Bootcamp Ignite sobre Fundamentos do Next.js</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/react%20version-16.13.1-informational"/>
@@ -28,11 +28,9 @@
 
 ### 📎 Features
 
-- [x] Listar pratos de comida
-- [x] Adicionar novos pratos de comida 
-- [x] Editar pratos de comida
-- [x] Remover pratos de comida
-- [x] Alterar disponibilidade dos pratos de comida
+- [x] Listagem de publicações
+- [x] Carregamento das próximas publicações 
+- [x] Detalhamento da publicação
 
 ### 💻 Projeto
 Spacetraveling é uma aplicação que simula um "workflow" de um blog real, onde as postagens publicadas na aplicação, são feita via o Prismic CMS. Esse Projeto foi desenvolvido como desafio principal da Semana 03 do Bootcamp Ignite.
