@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">
-    🚀 GoRestaurant
+    🚀 </> spacetraveling.
 </h1>
 <p align="center">Desafio do Bootcamp Ignite sobre Fundamentos do Next.js</p>
 
@@ -37,7 +37,7 @@ Spacetraveling é uma aplicação que simula um "workflow" de um blog real, onde
 
 ### 🖼 Demonstração
 <p>
-   <img src="https://github.com/gustavo-nt/ignite-gorestaurant/blob/master/src/assets/home.png" alt="Dashboard"/>
+   <img src="https://github.com/gustavo-nt/ignite-spacetraveling/blob/master/public/post.png" alt="Post"/>
 </p>
 
 ### ⚙ Pré-requisitos
