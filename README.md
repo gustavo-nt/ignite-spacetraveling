@@ -58,9 +58,6 @@ $ yarn ou npm
 # Execute a aplicação
 $ yarn ou npm dev
 
-# Rode o servidor fake
-$ yarn ou npm server
-
 # Execute os testes
 $ yarn test
 ```
