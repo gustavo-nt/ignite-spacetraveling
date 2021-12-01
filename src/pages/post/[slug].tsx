@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Head from 'next/head';
+import Link from 'next/link';
 
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { RichText } from 'prismic-dom';
@@ -16,6 +17,7 @@ import styles from './post.module.scss';
 
 interface Post {
   first_publication_date: string | null;
+  last_publication_date: string | null;
   data: {
     title: string;
     banner: {
@@ -33,11 +35,30 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  preview: boolean;
+  navigation: {
+    prev?: {
+      uid: string;
+      data: {
+        title: string;
+      }
+    }[],
+    next?: {
+      uid: string;
+      data: {
+        title: string;
+      }
+    }[]
+  };
 }
 
-export default function Post({ post }: PostProps): JSX.Element {
+export default function Post({ post, preview, navigation }: PostProps): JSX.Element {
   const router = useRouter()
-  const { first_publication_date, data } = post;
+  const {
+    first_publication_date,
+    last_publication_date,
+    data
+  } = post;
 
   const words = data.content.reduce((total, content) => {
     total += content.heading.split(' ').length;
@@ -59,10 +80,10 @@ export default function Post({ post }: PostProps): JSX.Element {
         <title>{`${data.title} | spacetraveling`}</title>
       </Head>
 
-      <img 
-        src={data.banner.url} 
-        alt='Banner' 
-        className={styles.banner} 
+      <img
+        src={data.banner.url}
+        alt='Banner'
+        className={styles.banner}
       />
 
       <main className={commonStyles.container}>
@@ -88,19 +109,75 @@ export default function Post({ post }: PostProps): JSX.Element {
               {minutes} min
             </li>
           </ul>
+          {first_publication_date !== last_publication_date && (
+            <span>
+              * editado em {
+                format(
+                  new Date(last_publication_date),
+                  'dd MMM yyyy',
+                  {
+                    locale: ptBR
+                  }
+                )
+              },
+              às {
+                format(
+                  new Date(last_publication_date),
+                  'HH:mm',
+                  {
+                    locale: ptBR
+                  }
+                )
+              }
+            </span>
+          )}
         </div>
 
-        {data.content.map(content => (
-          <article 
-            key={content.heading}
-            className={styles.post} 
-          >
-            <h2>{content.heading}</h2>
-            <div 
-              dangerouslySetInnerHTML={{ __html: RichText.asHtml(content.body) }}>
-            </div>
-          </article>
-        ))}
+        <div className={styles.content}>
+          {data.content.map(content => (
+            <article
+              key={content.heading}
+              className={styles.post}
+            >
+              <h2>{content.heading}</h2>
+              <div
+                dangerouslySetInnerHTML={{ __html: RichText.asHtml(content.body) }}>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className={styles.navigation}>
+          <div className={styles.prev}>
+            {navigation?.prev.length > 0 && (
+              <>
+                <span>{navigation.prev[0].data.title}</span>
+                <Link href={`/post/${navigation.prev[0].uid}`}>
+                  <a>Post anterior</a>
+                </Link>
+              </>
+            )}
+          </div>
+
+          <div className={styles.next}>
+            {navigation?.next.length > 0 && (
+              <>
+                <span>{navigation.next[0].data.title}</span>
+                <Link href={`/post/${navigation.next[0].uid}`}>
+                  <a>Próximo post</a>
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        {preview && (
+          <aside className={commonStyles.preview}>
+            <Link href="/api/exit-preview">
+              <a>Sair do modo Preview</a>
+            </Link>
+          </aside>
+        )}
       </main>
     </>
   )
@@ -126,15 +203,38 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ 
+  params,
+  preview = false,
+  previewData 
+}) => {
   const { slug } = params;
 
   const prismic = getPrismicClient();
-  const response = await prismic.getByUID('posts', String(slug), {});
+  const response = await prismic.getByUID('posts', String(slug), {
+    ref: previewData?.ref || null
+  });
+
+  const prev = await prismic.query([
+    Prismic.predicates.at('document.type', 'posts')
+  ], {
+    pageSize: 1,
+    after: response.id,
+    orderings: '[document.last_publication_date]'
+  });
+
+  const next = await prismic.query([
+    Prismic.predicates.at('document.type', 'posts')
+  ], {
+    pageSize: 1,
+    after: response.id,
+    orderings: '[document.last_publication_date desc]'
+  });
 
   const post = {
     uid: response.uid,
     first_publication_date: response.first_publication_date,
+    last_publication_date: response.last_publication_date,
     data: {
       title: response.data.title,
       subtitle: response.data.subtitle,
@@ -153,7 +253,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
-      post
+      post,
+      preview,
+      navigation: {
+        prev: prev.results,
+        next: next.results
+      },
     },
     revalidate: 60 * 30, // 30 minutes
   }
