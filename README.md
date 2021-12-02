@@ -31,6 +31,9 @@
 - [x] Listagem de publicações
 - [x] Carregamento das próximas publicações 
 - [x] Detalhamento da publicação
+- [x] Acesso ao modo preview
+- [x] Comentários para posts
+- [x] Navegação entre os posts
 
 ### 💻 Projeto
 Spacetraveling é uma aplicação que simula um "workflow" de um blog real, onde as postagens publicadas na aplicação, são feita via o Prismic CMS. Esse Projeto foi desenvolvido como desafio principal da Semana 03 do Bootcamp Ignite.
