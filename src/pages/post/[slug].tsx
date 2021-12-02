@@ -1,19 +1,21 @@
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import Head from 'next/head';
 import Link from 'next/link';
-
-import { GetStaticPaths, GetStaticProps } from 'next';
 import { RichText } from 'prismic-dom';
-import { AiOutlineCalendar } from 'react-icons/ai';
-import { FiClock, FiUser } from 'react-icons/fi';
-
-import { getPrismicClient } from '../../services/prismic';
-import Prismic from '@prismicio/client';
 import { useRouter } from 'next/router';
+import Prismic from '@prismicio/client';
 
+import Comments from '../../components/Comments';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { getPrismicClient } from '../../services/prismic';
+
+import { FiClock, FiUser } from 'react-icons/fi';
+import { AiOutlineCalendar } from 'react-icons/ai';
+
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+import styles from './styles.module.scss';
 import commonStyles from '../../styles/common.module.scss';
-import styles from './post.module.scss';
 
 interface Post {
   first_publication_date: string | null;
@@ -170,6 +172,8 @@ export default function Post({ post, preview, navigation }: PostProps): JSX.Elem
             )}
           </div>
         </div>
+
+        <Comments />
 
         {preview && (
           <aside className={commonStyles.preview}>
