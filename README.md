@@ -70,6 +70,7 @@ $ yarn test
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - ReactJS
+- Next.js
 - Typescript
 - Jest
 
