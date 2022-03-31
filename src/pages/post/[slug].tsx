@@ -57,10 +57,11 @@ interface PostProps {
 export default function Post({ post, preview, navigation }: PostProps): JSX.Element {
   const router = useRouter()
   const {
-    first_publication_date,
     last_publication_date,
     data
   } = post;
+
+  const first_publication_date = '2000-01-18T00:00:00+0000'
 
   const words = data.content.reduce((total, content) => {
     total += content.heading.split(' ').length;
