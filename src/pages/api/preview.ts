@@ -1,8 +1,8 @@
 import Prismic from '@prismicio/client';
 import { Document } from '@prismicio/client/types/documents';
 
-export const apiEndpoint = process.env.PRISMIC_API_ENDPOINT;
-export const accessToken = process.env.PRISMIC_ACCESS_TOKEN;
+export const apiEndpoint = process.env.PRISMIC_ENDPOINT;
+export const accessToken = process.env.PRISMIC_TOKEN;
 
 function linkResolver(doc: Document): string {
   if (doc.type === 'posts') {
