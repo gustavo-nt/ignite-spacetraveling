@@ -237,8 +237,10 @@ export const getStaticProps: GetStaticProps = async ({
 
   const post = {
     uid: response.uid,
-    first_publication_date: response.first_publication_date,
-    last_publication_date: response.last_publication_date,
+    first_publication_date: 
+      response.first_publication_date ?? '2000-01-18T00:00:00+0000',
+    last_publication_date: 
+      response.last_publication_date ?? '2000-01-18T12:00:00+0000',
     data: {
       title: response.data.title,
       subtitle: response.data.subtitle,
