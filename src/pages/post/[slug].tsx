@@ -55,7 +55,11 @@ interface PostProps {
 }
 
 export default function Post({ post, preview, navigation }: PostProps): JSX.Element {
-  const router = useRouter()
+  if (!post) 
+    return null;
+
+  const router = useRouter();
+
   const {
     first_publication_date,
     last_publication_date,
